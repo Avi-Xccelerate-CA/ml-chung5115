@@ -12,10 +12,6 @@
 # 6   X5 latitude
 # 7   X6 longitude
 
-# feel free to plot any graph for data visualization but it will not be graded
-
-
-
 # import the library
 from sklearn.model_selection import train_test_split
 from sklearn import linear_model
@@ -23,148 +19,135 @@ from sklearn.metrics import mean_squared_error, r2_score
 import math
 import pandas as pd
 
-
-#Question1
+# Question1
 def load():
-	'''
-	load the dataset
-	return df
-	'''
-	#SOLUTION START( ~ 1 line of code)
-	
-
-	#SOLUTION END
-	return df
+    '''
+    load the dataset
+    return df
+    '''
+    # SOLUTION START
+    df = pd.read_csv('data/real_estate_data.csv')  # Adjust the relative path as needed
+    # SOLUTION END
+    return df
 
 df = load()
 print(df.head())
 
-
-# Since there is no need of 'No' column and 'transcation date',
+# Since there is no need of 'No' column and 'transaction date',
 # so we will drop them
-df.drop(['No'],axis='columns', inplace=True)
-df.drop(['X1 transaction date'], axis='columns' ,inplace=True)
+df.drop(['No'], axis='columns', inplace=True)
+df.drop(['X1 transaction date'], axis='columns', inplace=True)
 
-
-#Question2
+# Question2
 def getShape():
-	'''
-	return the shape of dataframe
-	'''
-	#SOLUTION START( ~ 1 line of code)
-	
-
-	#SOLUTION END
+    '''
+    return the shape of dataframe
+    '''
+    # SOLUTION START
+    return df.shape
+    # SOLUTION END
 
 print(getShape())
 
-#Question3
+# Question3
 def getInfo():
-	'''
-	return the information of information about a DataFrame
-	including the index dtype and columns, non-null values and memory usage.
-	'''
-	#SOLUTION START( ~ 1 line of code)
-	
-
-	#SOLUTION END
+    '''
+    return the information of information about a DataFrame
+    including the index dtype and columns, non-null values and memory usage.
+    '''
+    # SOLUTION START
+    return df.info()
+    # SOLUTION END
 
 print(getInfo())
 
 # Question4
 def checkNull():
-	'''
-	this function check if any null value
-	expected output:
-	No                                        0
-	X1 transaction date                       0
-	X2 house age                              0
-	X3 distance to the nearest MRT station    0
-	X4 number of convenience stores           0
-	X5 latitude                               0
-	X6 longitude                              0
-	Y house price of unit area                0
-	dtype: int64
-	'''
+    '''
+    this function check if any null value
+    expected output:
+    No                                        0
+    X1 transaction date                       0
+    X2 house age                              0
+    X3 distance to the nearest MRT station    0
+    X4 number of convenience stores           0
+    X5 latitude                               0
+    X6 longitude                              0
+    Y house price of unit area                0
+    dtype: int64
+    '''
 
-	#SOLUTION START( ~ 1 line of code)
-	
-
-	#SOLUTION END
-
+    # SOLUTION START
+    return df.isnull().sum()
+    # SOLUTION END
 
 print(checkNull())
 
-#Question5
+# Question5
 def getStatistic():
-	'''
-	return the statistic of Dataframe such as count, mean, std, min, max, etc
-	'''
+    '''
+    return the statistic of Dataframe such as count, mean, std, min, max, etc
+    '''
 
-	#SOLUTION START( ~ 1 line of code)
-
-	#SOLUTION END
+    # SOLUTION START
+    return df.describe()
+    # SOLUTION END
 
 print(getStatistic())
 
-
-#Now, we will extract the target variable which is 'Y house price of unit area' from the dataframe for training
+# Now, we will extract the target variable which is 'Y house price of unit area' from the dataframe for training
 
 df_y = df[['Y house price of unit area']]
-df_X = df.drop(['Y house price of unit area'],axis='columns')
+df_X = df.drop(['Y house price of unit area'], axis='columns')
 
 print(df_y.head())
 print(df_X.head())
 
-
-#Question 6
+# Question 6
 # Split the data into 80%training/20%testing sets
-# IMPORTANT:for grading purpose,  please set the same seed random_state = 42
+# IMPORTANT: for grading purpose,  please set the same seed random_state = 42
 
 def split():
-	'''
-	IMPORTANT: this function will return four values X_train, X_test, y_train, y_test
-	'''
-	#SOLUTION START( ~ 1-2 line of code)
-
-	#SOLUTION END
+    '''
+    IMPORTANT: this function will return four values X_train, X_test, y_train, y_test
+    '''
+    # SOLUTION START
+    X_train, X_test, y_train, y_test = train_test_split(df_X, df_y, test_size=0.2, random_state=42)
+    # SOLUTION END
+    return X_train, X_test, y_train, y_test
 
 X_train, X_test, y_train, y_test = split()
 
-
-#Question 9
+# Question 9
 def makeModel():
-	'''
-	this function will create linear regression object,train the model using the training sets,
-	make predictions using the testing set
-	this function returns coefficients, intercept, mse, rmse, variance
-	'''
+    '''
+    this function will create linear regression object, train the model using the training sets,
+    make predictions using the testing set
+    this function returns coefficients, intercept, mse, rmse, variance
+    '''
 
-	# Create linear regression object
-	#SOLUTION START(~ 1 line of code)
+    # Create linear regression object
+    # SOLUTION START
+    model = linear_model.LinearRegression()
+    # SOLUTION END
 
-	#SOLUTION END
+    # Train the model using the training sets
+    # SOLUTION START
+    model.fit(X_train, y_train)
+    # SOLUTION END
 
-	# Train the model using the training sets
-	#SOLUTION START(~ 1 line of code)
+    # Make predictions using the testing set
+    # SOLUTION START
+    y_pred = model.predict(X_test)
+    # SOLUTION END
 
+    # Fill in the blanks, how to get the value of coefficients, intercept, mse, rmse, r2score
+    # SOLUTION START
+    coefficients = model.coef_
+    intercept = model.intercept_
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = math.sqrt(mse)
+    r2score = r2_score(y_test, y_pred)
+    # SOLUTION END
 
-	#SOLUTION END
-
-	# Make predictions using the testing set
-	#SOLUTION START(~ 1 line of code)
-
-	#SOLUTION END
-
-	#fill in the blanks, how to get the value of coefficients, intercept, mse, rmse, r2score
-	#SOLUTION START
-	#The coefficients i.e. the slope
-	coefficients = #YOUR ANSWER
-	intercept = #YOUR ANSWER
-	mse = #YOUR ANSWER
-	rmse = #YOUR ANSWER
-	r2score = #YOUR ANSWER
-	#SOLUTION END
-
-
-	return (coefficients, intercept, mse, rmse, r2score)
+    return (coefficients, intercept, mse, rmse, r2score)
